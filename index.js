@@ -41,8 +41,25 @@ class Airplane {
 */
 
 class Person {
+  constructor(name, age,) {
+    this.name = name;
+    this.age = age;
+    this.stomach = []
 
+  }
+  eat(edible) {
+    if(this.stomach.length < 10){
+      this.stomach.push(edible)
+    }
+  }
+  poop(){
+    this.stomach = []
+  }
+  toString() {
+    return `${this.name} ${this.age}`
+  }
 }
+const personOne = new Person('Lebron, 35')
 
 /*
   TASK 2
@@ -59,8 +76,36 @@ class Person {
 */
 
 class Car {
-
+  constructor(model, milesPerGallon) {
+    this.model = model;
+    this.milesPerGallon = milesPerGallon;
+    this.tank = 0;
+    this.odometer = 0
+  }
+fill(gallons) { 
+   this.tank += gallons
 }
+drive(distance) {
+  let usedFuel = (this.tank - distance / this.milesPerGallon)
+
+  if (usedFuel < 0){
+    let milesBeforeEmpty = usedFuel * this.milesPerGallon
+    let milesDriven = distance + milesBeforeEmpty 
+    this.odometer += milesDriven
+    this.tank = 0
+    //console.log(`I ran out of fuel at ${this.odometer + milesDriven} miles!`)
+    return `I ran out of fuel at ${this.odometer + milesDriven} miles!`
+  } else {
+  this.odometer += distance;
+  this.tank -= (distance / this.milesPerGallon);
+  }
+}
+}
+
+//let test = new Car('test', 5)
+//test.fill(30)
+//test.drive(10)
+//test.drive(1000)
 
 /*
   TASK 3
@@ -75,9 +120,20 @@ class Car {
         + {name} and {location} of course come from the instance's own properties.
 */
 class Lambdasian {
-
+constructor({name, age, location}){
+  this.name = name;
+  this.age = age;
+  this.location = location;
+}
+speak(){
+  return `Hello my name is ${this.name}, I am from ${this.location}`
 }
 
+}
+const newLambdasian = new Lambdasian ({
+  name: 'lebron',
+  age: 35, 
+  location: 'las angeles'})
 /*
   TASK 4
     - Write an Instructor class extending Lambdasian.
@@ -92,7 +148,24 @@ class Lambdasian {
         + `demo` receives a `subject` string as an argument and returns the phrase 'Today we are learning about {subject}' where subject is the param passed in.
         + `grade` receives a `student` object and a `subject` string as arguments and returns '{student.name} receives a perfect score on {subject}'
 */
-class Instructor {
+class Instructor extends Lambdasian {
+  constructor({name, age, location, specialty, favLanguage, catchPhrase}) {
+    super({name, age, location})
+    this.specialty = specialty;
+    this.favLanguage = favLanguage;
+    this.catchPhrase = catchPhrase;
+}
+
+demo(subject){
+  this.subject = subject
+  return `Today we are learning about ${this.subject}`
+  
+}
+grade(student, subject){
+  this.student = student;
+  this.subject = subject;
+  return `${this.student.name} receives a perfect score on ${this.subject}`
+}
 
 }
 
@@ -111,8 +184,23 @@ class Instructor {
         + `PRAssignment` a method that receives a subject as an argument and returns `student.name has submitted a PR for {subject}`
         + `sprintChallenge` similar to PRAssignment but returns `student.name has begun sprint challenge on {subject}`
 */
-class Student {
-
+class Student extends Lambdasian{
+constructor(attribute){
+  super(attribute);
+  this.previousBackground = attribute.previousBackground;
+  this.className = attribute.className;
+  this.favSubjects = attribute.favSubjects;
+}
+listSubjects(){
+  return `Loving ${this.favSubjects}!`
+}
+PRAssignment(subject){
+  this.subject = subject;
+  return `${this.name} has submitted a PR for ${this.subject}`
+}
+sprintChallenge(){
+  return `${this.name} has begun sprint challenge on ${this.subject}`
+}
 }
 
 /*
@@ -128,8 +216,21 @@ class Student {
         + `standUp` a method that takes in a slack channel and returns `{name} announces to {channel}, @channel standy times!`
         + `debugsCode` a method that takes in a student object and a subject and returns `{name} debugs {student.name}'s code on {subject}`
 */
-class ProjectManager {
+class ProjectManager extends Instructor{
+constructor(attribute){
+  super(attribute);
+  this.gradClassName = attribute.gradClassName;
+  this.favInstructor = attribute.favInstructor;
 
+}
+standUp(channel){
+  this.channel = channel
+  return `${this.name} announces to ${this.channel}, @channel standy times!`
+}
+debugsCode(student){
+  this.student = student
+  `${this.name} debugs ${this.student.name}'s code on ${this.subject}`
+}
 }
 
 /*
